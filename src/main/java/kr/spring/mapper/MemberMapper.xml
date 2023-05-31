@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.spring.mapper.MemberMapper">
+	<select id="registerCheck" parameterType="String" resultType="kr.spring.entity.Member">
+		select * from member where memID = #{memID}
+	</select>
+	
+	<!-- 마이바티스가 실행한 문장갯수(숫자)를 반환한다. -->
+	<insert id="join" parameterType="kr.spring.entity.Member">
+		insert into member(memIdx, memID, memPassword, memName, memAge, memGender,
+        memEmail, memProfile)
+        select IFNULL(MAX(memIdx) + 1, 1), #{memID}, #{memPassword}, #{memName}, #{memAge}, #{memGender}, #{memEmail}, #{memProfile}
+        from member
+	</insert>
+	
+	<select id="login" parameterType="kr.spring.entity.Member" resultType="kr.spring.entity.Member">
+		select * from member where memID = #{memID} and memPassword = #{memPassword}
+	</select>
+	
+	<update id="update" parameterType="kr.spring.entity.Member">
+		update member
+		set memPassword = #{memPassword}, memName = #{memName}, memAge = #{memAge}, memGender = #{memGender}, memEmail = #{memEmail}
+		where memID = #{memID}
+	</update>
+	
+	<update id="imageUpload" parameterType="kr.spring.entity.Member">
+		update member 
+		set memProfile = #{memProfile}
+		where memID = #{memID}
+	</update>
+	
+	<select id="getMember" parameterType="String" resultType="kr.spring.entity.Member">
+		select * from member where memID = #{memID}
+		
+	</select>
+</mapper>
